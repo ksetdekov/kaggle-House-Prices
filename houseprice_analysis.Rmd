@@ -1,0 +1,16 @@
+---
+title: "House prices"
+author: "Kirill Setdekov"
+date: '17 февраля 2019 г '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup libraries
+```{r}
+library(kaggler)
+```
+
