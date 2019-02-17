@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(readr)
 library(ggplot2)
+library(dplyr)
+library(party)
 
 ```
 
@@ -59,4 +61,33 @@ submission1$SalePrice <- predict.lm(dumbreg, testNafixed1)
 write.csv(submission1,"submission1.csv",row.names=FALSE)
 ```
 1 отправка просто линейной ригрессии
+
 Нужно обработать пустые переменные
+
+## submission 2
+# factor prosessing
+```{r}
+with(train, table(MSSubClass))
+with(train, table(MSZoning))
+with(train, table(Street))
+with(train, table(Alley))
+train$Alley[is.na(train$Alley)] <- "no"
+with(train, table(LotShape))
+
+
+train <-
+train %>% mutate(
+MSSubClass = factor(MSSubClass),
+MSZoning = factor(MSZoning),
+Street = factor(Street),
+Alley = factor(Alley),
+LotShape=factor(LotShape, levels= c("Reg", "IR1", "IR2", "IR3"),ordered = TRUE)
+) 
+```
+
+```{r}
+cfit <- ctree(SalePrice ~ MSSubClass+MSZoning+Street+Alley+Alley+LotShape,train)
+plot(cfit)
+```
+
+
