@@ -11,6 +11,51 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Setup libraries
 ```{r}
-library(kaggler)
+library(readr)
+library(ggplot2)
+
 ```
 
+## load data
+```{r message=FALSE}
+train <- read_csv("data/train.csv")
+test <- read_csv("data/test.csv")
+```
+
+```{r}
+qplot(train$SalePrice)
+```
+
+Select only numeric for a simple test run pairs
+```{r}
+trainnum<- dplyr::select_if(train, is.numeric)
+pairs(trainnum[,c(1:10, 38)])
+ qplot(train$YearBuilt, train$YearRemodAdd)
+ ggplot(data=trainnum, mapping = aes(x=YearBuilt, y=YearRemodAdd, colour=log(SalePrice)))+geom_point()
+qplot(trainnum$YrSold)
+```
+
+## simple linear regression
+```{r}
+dumbreg <- lm(SalePrice~.,trainnum)
+summary(dumbreg)
+
+testNafixed1 <- test
+```
+
+
+```{r warning=FALSE}
+testNafixed1[] <- lapply(testNafixed1, function(x) { 
+  x[is.na(x)] <- mean(x, na.rm = TRUE)
+  x
+})
+```
+
+```{r}
+
+submission1<- testNafixed1[,1]
+
+submission1$SalePrice <- predict.lm(dumbreg, testNafixed1)
+write.csv(submission1,"submission1.csv",row.names=FALSE)
+```
+Нужно обработать пустые переменные
