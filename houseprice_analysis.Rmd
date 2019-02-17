@@ -58,4 +58,5 @@ submission1<- testNafixed1[,1]
 submission1$SalePrice <- predict.lm(dumbreg, testNafixed1)
 write.csv(submission1,"submission1.csv",row.names=FALSE)
 ```
+1 отправка просто линейной ригрессии
 Нужно обработать пустые переменные
