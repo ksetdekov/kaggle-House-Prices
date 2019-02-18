@@ -3,6 +3,7 @@ title: "House prices"
 author: "Kirill Setdekov"
 date: '17 февраля 2019 г '
 output: html_document
+keep_md: true
 ---
 
 ```{r setup, include=FALSE}
